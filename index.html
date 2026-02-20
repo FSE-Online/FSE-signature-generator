@@ -5,17 +5,17 @@
     <title>FSE Signature Creator</title>
     <style>
         :root { --brand-orange: #ff6600; --brand-blue: #3b5998; }
-        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
-        .wrapper { display: flex; gap: 30px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
+        .wrapper { display: flex; gap: 30px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 1100px; }
         .form-panel { width: 350px; }
         .input-box { margin-bottom: 15px; }
         label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #666; }
-        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         
-        /* Preview Styling */
-        .preview-panel { border-left: 1px solid #eee; padding-left: 40px; min-width: 500px; }
-        .sig-container { background: white; padding: 20px; }
-        .copy-btn { background: var(--brand-orange); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+        .preview-panel { border-left: 1px solid #eee; padding-left: 40px; min-width: 550px; }
+        .copy-btn { background: var(--brand-orange); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%; }
+        .copy-btn:hover { background: #e65c00; }
+        small { color: #888; font-size: 11px; display: block; margin-top: 4px; }
     </style>
 </head>
 <body>
@@ -23,71 +23,112 @@
 <div class="wrapper">
     <div class="form-panel">
         <h2>Edit Details</h2>
+        <div class="input-box">
+            <label>Profile Photo</label>
+            <input type="file" id="in-file" accept="image/*" onchange="handleImage(this)">
+            <small>Upload a square photo for best results.</small>
+        </div>
         <div class="input-box"><label>Full Name</label><input type="text" id="in-name" value="John Smith" oninput="draw()"></div>
         <div class="input-box"><label>Job Title</label><input type="text" id="in-title" value="SEO Account Manager" oninput="draw()"></div>
-        <div class="input-box"><label>Photo URL</label><input type="text" id="in-img" value="https://fsedigital.com/email-signatures/new/no-profile.png" oninput="draw()"></div>
-        <div class="input-box"><label>Direct line</label><input type="text" id="in-mob" value="" oninput="draw()"></div>
+        <div class="input-box"><label>Direct Line</label><input type="text" id="in-mob" value="" placeholder="+44 (0)1234 567 890" oninput="draw()"></div>
         <div class="input-box"><label>Email</label><input type="text" id="in-email" value="john.smith@fsedigital.com" oninput="draw()"></div>
-        <div class="input-box"><label>LinkedIn</label><input type="text" id="in-linkedin" value="" oninput="draw()"></div>
+        <div class="input-box"><label>LinkedIn URL</label><input type="text" id="in-linkedin" value="" placeholder="https://linkedin.com/in/..." oninput="draw()"></div>
     </div>
 
     <div class="preview-panel">
         <div id="capture">
-            <table cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333; line-height: 1.4;">
+            <table cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333; line-height: 1.4; min-width: 450px;">
                 <tr><td colspan="2" style="border-top: 4px solid #ff6600; padding-bottom: 25px;"></td></tr>
+                
                 <tr>
                     <td valign="top" style="padding-right: 30px;">
-                        <img id="out-img" src="https://fsedigital.com/email-signatures/new/no-profile.png" width="160" height="160" style="border-radius: 50%; border: 3px solid #ff6600; display: block; object-fit: cover;">
+                        <img id="out-img" src="https://fsedigital.com/email-signatures/new/no-profile.png" width="150" height="150" style="border-radius: 50%; border: 3px solid #ff6600; display: block; object-fit: cover;">
                     </td>
+                    
                     <td valign="top">
                         <div id="out-name" style="font-size: 22px; font-weight: bold; color: #1a1a1a;">John Smith</div>
                         <div id="out-title" style="font-size: 16px; color: #777; margin-bottom: 15px;">SEO Account Manager</div>
                         
                         <table cellpadding="0" cellspacing="0" style="font-size: 14px;">
                             <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">T:</strong> <span>+44 (0)1245 477 449</span></td></tr>
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">T:</strong> <span id="out-mob"></span></td></tr>
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-email">john.smith@fsedigital.com</span></td></tr>
+                            
+                            <tr id="row-mob" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">D:</strong> <span id="out-mob"></span></td></tr>
+                            
+                            <tr id="row-email"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-email">john.smith@fsedigital.com</span></td></tr>
+                            
                             <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W:</strong> fsedigital.com</td></tr>
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-linkedin">john.smith@fsedigital.com</span></td></tr>                            
+                            
+                            <tr id="row-linkedin" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">L:</strong> <span id="out-linkedin"></span></td></tr>
                         </table>
 
                         <div style="margin-top: 15px">
-
-                            <div><img src="https://fsedigital.com/email-signatures/new/fseDigitalLogo.png" alt="" style="max-width: 450px; display: block;"></div>
-                            <div><img src="https://fsedigital.com/email-signatures/new/FreelanceSEOLogo.png" alt="" style="max-width: 450px; display: block;"></div>
-
+                            <img src="https://fsedigital.com/email-signatures/new/fseDigitalLogo.png" alt="fseDigital" style="width: 140px; margin-bottom: 5px; display: block;">
+                            <img src="https://fsedigital.com/email-signatures/new/FreelanceSEOLogo.png" alt="Freelance SEO" style="width: 160px; display: block;">
                         </div>
-
                     </td>
                 </tr>
+                
                 <tr>
                     <td colspan="2" style="padding-top: 30px;">
-                        <img src="https://fsedigital.com/email-signatures/new/partner-icons.png" alt="Partners" style="max-width: 450px; display: block;">
+                        <img src="https://fsedigital.com/email-signatures/new/partner-icons.png" alt="Partners" style="max-width: 420px; display: block;">
                     </td>
                 </tr>
             </table>
-            </div>
+        </div>
         <button class="copy-btn" onclick="copy()">Copy Signature</button>
+        <small style="text-align: center;">After clicking, paste (Ctrl+V) into your Outlook/Gmail signature settings.</small>
     </div>
 </div>
 
 <script>
+    function handleImage(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('out-img').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
     function draw() {
-        document.getElementById('out-name').innerText = document.getElementById('in-name').value;
-        document.getElementById('out-title').innerText = document.getElementById('in-title').value;
-        document.getElementById('out-mob').innerText = document.getElementById('in-mob').value;
-        document.getElementById('out-email').innerText = document.getElementById('in-email').value;
-        document.getElementById('out-img').src = document.getElementById('in-img').value;
-        document.getElementById('out-linkedin').innerText = document.getElementById('in-linkedin').value;
+        // Text Updates
+        const name = document.getElementById('in-name').value;
+        const title = document.getElementById('in-title').value;
+        const mob = document.getElementById('in-mob').value;
+        const email = document.getElementById('in-email').value;
+        const linkedin = document.getElementById('in-linkedin').value;
+
+        document.getElementById('out-name').innerText = name || "Your Name";
+        document.getElementById('out-title').innerText = title || "Job Title";
+        document.getElementById('out-mob').innerText = mob;
+        document.getElementById('out-email').innerText = email;
+        document.getElementById('out-linkedin').innerText = linkedin;
+
+        // Visibility Logic (Hide row if empty)
+        document.getElementById('row-mob').style.display = mob ? "table-row" : "none";
+        document.getElementById('row-email').style.display = email ? "table-row" : "none";
+        document.getElementById('row-linkedin').style.display = linkedin ? "table-row" : "none";
     }
 
     async function copy() {
         const container = document.getElementById('capture');
-        const blob = new Blob([container.innerHTML], { type: "text/html" });
+        // We clone the HTML to ensure we're getting the current state of visibility
+        const html = container.innerHTML;
+        const blob = new Blob([html], { type: "text/html" });
         const data = [new ClipboardItem({ "text/html": blob })];
-        await navigator.clipboard.write(data);
-        alert("Signature copied! Paste it into your email settings.");
+        
+        try {
+            await navigator.clipboard.write(data);
+            alert("Signature copied! Now paste it into your email settings.");
+        } catch (err) {
+            console.error(err);
+            alert("Failed to copy. Please try using Chrome or Edge.");
+        }
     }
+
+    // Run once on load to set initial visibility
+    draw();
 </script>
 </body>
 </html>
