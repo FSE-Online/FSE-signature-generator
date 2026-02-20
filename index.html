@@ -28,6 +28,7 @@
         <div class="input-box"><label>Photo URL</label><input type="text" id="in-img" value="https://i.imgur.com/8kX7vM6.png" oninput="draw()"></div>
         <div class="input-box"><label>Mobile</label><input type="text" id="in-mob" value="+44 7809 480 339" oninput="draw()"></div>
         <div class="input-box"><label>Email</label><input type="text" id="in-email" value="danny.hall@fsedigital.com" oninput="draw()"></div>
+        <div class="input-box"><label>LinkedIn</label><input type="text" id="in-linkedin" value="danny.hall@fsedigital.com" oninput="draw()"></div>
     </div>
 
     <div class="preview-panel">
@@ -46,6 +47,7 @@
                             <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">P:</strong> <span id="out-mob">+44 7809 480 339</span></td></tr>
                             <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-email">danny.hall@fsedigital.com</span></td></tr>
                             <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W:</strong> fsedigital.com</td></tr>
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-linkedin">danny.hall@fsedigital.com</span></td></tr>                            
                         </table>
                     </td>
                 </tr>
@@ -67,6 +69,7 @@
         document.getElementById('out-mob').innerText = document.getElementById('in-mob').value;
         document.getElementById('out-email').innerText = document.getElementById('in-email').value;
         document.getElementById('out-img').src = document.getElementById('in-img').value;
+        document.getElementById('out-linkedin').innerText = document.getElementById('in-linkedin').value;
     }
 
     async function copy() {
