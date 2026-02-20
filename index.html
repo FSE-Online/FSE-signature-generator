@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Professional Signature Creator</title>
+    <style>
+        :root { --brand-orange: #ff6600; --brand-blue: #3b5998; }
+        body { font-family: sans-serif; background: #f0f2f5; padding: 20px; display: flex; justify-content: center; }
+        .wrapper { display: flex; gap: 30px; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .form-panel { width: 350px; }
+        .input-box { margin-bottom: 15px; }
+        label { display: block; font-size: 12px; font-weight: bold; margin-bottom: 5px; color: #666; }
+        input { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; }
+        
+        /* Preview Styling */
+        .preview-panel { border-left: 1px solid #eee; padding-left: 40px; min-width: 500px; }
+        .sig-container { background: white; padding: 20px; }
+        .copy-btn { background: var(--brand-orange); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; }
+    </style>
+</head>
+<body>
+
+<div class="wrapper">
+    <div class="form-panel">
+        <h2>Edit Details</h2>
+        <div class="input-box"><label>Full Name</label><input type="text" id="in-name" value="Danny Hall" oninput="draw()"></div>
+        <div class="input-box"><label>Job Title</label><input type="text" id="in-title" value="Founder & MD" oninput="draw()"></div>
+        <div class="input-box"><label>Photo URL</label><input type="text" id="in-img" value="https://i.imgur.com/8kX7vM6.png" oninput="draw()"></div>
+        <div class="input-box"><label>Mobile</label><input type="text" id="in-mob" value="+44 7809 480 339" oninput="draw()"></div>
+        <div class="input-box"><label>Email</label><input type="text" id="in-email" value="danny.hall@fsedigital.com" oninput="draw()"></div>
+    </div>
+
+    <div class="preview-panel">
+        <div id="capture">
+            <table cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333; line-height: 1.4;">
+                <tr><td colspan="2" style="border-top: 4px solid #ff6600; padding-bottom: 25px;"></td></tr>
+                <tr>
+                    <td valign="top" style="padding-right: 30px;">
+                        <img id="out-img" src="https://i.imgur.com/8kX7vM6.png" width="160" height="160" style="border-radius: 50%; border: 3px solid #ff6600; display: block; object-fit: cover;">
+                    </td>
+                    <td valign="top">
+                        <div id="out-name" style="font-size: 22px; font-weight: bold; color: #1a1a1a;">Danny Hall</div>
+                        <div id="out-title" style="font-size: 16px; color: #777; margin-bottom: 15px;">Founder & MD</div>
+                        
+                        <table cellpadding="0" cellspacing="0" style="font-size: 14px;">
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">P:</strong> <span id="out-mob">+44 7809 480 339</span></td></tr>
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-email">danny.hall@fsedigital.com</span></td></tr>
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W:</strong> fsedigital.com</td></tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" style="padding-top: 30px;">
+                        <img src="https://i.imgur.com/YvVnS7L.png" alt="Partners" style="max-width: 450px; display: block;">
+                    </td>
+                </tr>
+            </table>
+            </div>
+        <button class="copy-btn" onclick="copy()">Copy Signature</button>
+    </div>
+</div>
+
+<script>
+    function draw() {
+        document.getElementById('out-name').innerText = document.getElementById('in-name').value;
+        document.getElementById('out-title').innerText = document.getElementById('in-title').value;
+        document.getElementById('out-mob').innerText = document.getElementById('in-mob').value;
+        document.getElementById('out-email').innerText = document.getElementById('in-email').value;
+        document.getElementById('out-img').src = document.getElementById('in-img').value;
+    }
+
+    async function copy() {
+        const container = document.getElementById('capture');
+        const blob = new Blob([container.innerHTML], { type: "text/html" });
+        const data = [new ClipboardItem({ "text/html": blob })];
+        await navigator.clipboard.write(data);
+        alert("Signature copied! Paste it into your email settings.");
+    }
+</script>
+</body>
+</html>
