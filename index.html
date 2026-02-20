@@ -50,54 +50,32 @@
                     
                     <td valign="top">
                         <div id="out-name" style="font-size: 22px; font-weight: bold; color: #1a1a1a;">John Smith</div>
-                        <div id="out-title" style="font-size: 16px; color: #777777; margin-bottom: 15px;">Founder & MD</div>
+                        <div id="out-title" style="font-size: 16px; color: #777777; margin-bottom: 15px;">SEO Account Manager</div>
                         
                         <table cellpadding="0" cellspacing="0" style="font-size: 14px; color: #333333; border-collapse: collapse;">
                             <tr>
-                                <td style="padding-bottom: 5px; width: 20px; vertical-align: top;">
-                                    <strong style="color:#ff6600;">t:</strong>
-                                </td>
-                                <td style="padding-bottom: 5px; vertical-align: top;">
-                                    <a href="tel:+441245477449" style="text-decoration:none; color:#333333;">+44 (0)1245 477 449</a>
-                                </td>
+                                <td style="padding-bottom: 5px; width: 22px; vertical-align: top;"><strong style="color:#ff6600;">t:</strong></td>
+                                <td style="padding-bottom: 5px; vertical-align: top;"><a href="tel:+441245477449" style="text-decoration:none; color:#333333;">+44 (0)1245 477 449</a></td>
                             </tr>
                             
                             <tr id="row-mob">
-                                <td style="padding-bottom: 5px; width: 20px; vertical-align: top;">
-                                    <strong style="color:#ff6600;">d:</strong>
-                                </td>
-                                <td style="padding-bottom: 5px; vertical-align: top;">
-                                    <a id="out-mob-link" href="tel:+447809480339" style="text-decoration:none; color:#333333;"><span id="out-mob">+44 7809 480 339</span></a>
-                                </td>
+                                <td style="padding-bottom: 5px; width: 22px; vertical-align: top;"><strong style="color:#ff6600;">d:</strong></td>
+                                <td style="padding-bottom: 5px; vertical-align: top;"><a id="out-mob-link" href="#" style="text-decoration:none; color:#333333;"><span id="out-mob"></span></a></td>
                             </tr>
                             
                             <tr id="row-email">
-                                <td style="padding-bottom: 5px; width: 20px; vertical-align: top;">
-                                    <strong style="color:#ff6600;">e:</strong>
-                                </td>
-                                <td style="padding-bottom: 5px; vertical-align: top;">
-                                    <a id="out-email-link" href="mailto:john.smith@fsedigital.com" style="text-decoration:none; color:#333333;"><span id="out-email">john.smith@fsedigital.com</span></a>
-                                </td>
+                                <td style="padding-bottom: 5px; width: 22px; vertical-align: top;"><strong style="color:#ff6600;">e:</strong></td>
+                                <td style="padding-bottom: 5px; vertical-align: top;"><a id="out-email-link" href="#" style="text-decoration:none; color:#333333;"><span id="out-email"></span></a></td>
                             </tr>
                             
                             <tr>
-                                <td style="padding-bottom: 5px; width: 20px; vertical-align: top;">
-                                    <strong style="color:#ff6600;">w:</strong>
-                                </td>
-                                <td style="padding-bottom: 5px; vertical-align: top;">
-                                    <a href="https://fsedigital.com" style="text-decoration:none; color:#333333;">www.fsedigital.com</a>
-                                </td>
+                                <td style="padding-bottom: 5px; width: 22px; vertical-align: top;"><strong style="color:#ff6600;">w:</strong></td>
+                                <td style="padding-bottom: 5px; vertical-align: top;"><a href="https://fsedigital.com" style="text-decoration:none; color:#333333;">www.fsedigital.com</a></td>
                             </tr>
                             
-                            <tr id="row-linkedin" style="display:none;">
-                                <td style="padding-bottom: 5px; width: 20px; vertical-align: middle;">
-                                    <span style="display: inline-block; line-height: 0;">
-                                        <strong style="color:#ff6600;">l:</strong>
-                                    </span>
-                                </td>
-                                <td style="padding-bottom: 5px; vertical-align: middle;">
-                                    <a id="out-linkedin-link" href="#" style="text-decoration:none; color:#333333;">Connect on LinkedIn</a>
-                                </td>
+                            <tr id="row-linkedin">
+                                <td style="padding-bottom: 5px; width: 22px; vertical-align: top;"><strong style="color:#ff6600;">l:</strong></td>
+                                <td style="padding-bottom: 5px; vertical-align: top;"><a id="out-linkedin-link" href="#" style="text-decoration:none; color:#333333;">Connect on LinkedIn</a></td>
                             </tr>
                         </table>
 
@@ -137,38 +115,47 @@
         const email = document.getElementById('in-email').value;
         const linkedin = document.getElementById('in-linkedin').value;
 
-        // Content
-        document.getElementById('out-name').innerText = name || "Your Name";
-        document.getElementById('out-title').innerText = title || "Your Title";
+        document.getElementById('out-name').innerText = name || "John Smith";
+        document.getElementById('out-title').innerText = title || "SEO Account Manager";
         document.getElementById('out-mob').innerText = mob;
         document.getElementById('out-email').innerText = email;
 
-        // Links
         document.getElementById('out-mob-link').href = "tel:" + mob.replace(/\s+/g, '');
         document.getElementById('out-email-link').href = "mailto:" + email;
         document.getElementById('out-linkedin-link').href = linkedin;
 
-        // Row Visibility
+        // Visual toggle for the browser preview
         document.getElementById('row-mob').style.display = mob ? "table-row" : "none";
         document.getElementById('row-email').style.display = email ? "table-row" : "none";
         document.getElementById('row-linkedin').style.display = linkedin ? "table-row" : "none";
     }
 
     async function copy() {
-        const container = document.getElementById('capture');
-        const html = container.innerHTML;
+        // 1. Clone the capture area
+        const original = document.getElementById('capture');
+        const clone = original.cloneNode(true);
+
+        // 2. Physically remove rows that are hidden
+        const rows = clone.querySelectorAll('tr[id]');
+        rows.forEach(row => {
+            if (row.style.display === 'none') {
+                row.remove();
+            }
+        });
+
+        // 3. Copy the cleaned HTML
+        const html = clone.innerHTML;
         const blob = new Blob([html], { type: "text/html" });
         const data = [new ClipboardItem({ "text/html": blob })];
         
         try {
             await navigator.clipboard.write(data);
-            alert("Signature copied! Paste it into your settings.");
+            alert("Signature copied! (Empty fields were removed)");
         } catch (err) {
             alert("Error copying. Please use Chrome or Edge.");
         }
     }
 
-    // Initialize
     draw();
 </script>
 </body>
