@@ -16,6 +16,9 @@
         .copy-btn { background: var(--brand-orange); color: white; border: none; padding: 12px 25px; border-radius: 5px; cursor: pointer; font-weight: bold; margin-top: 20px; width: 100%; }
         .copy-btn:hover { background: #e65c00; }
         small { color: #888; font-size: 11px; display: block; margin-top: 4px; }
+
+        /* Outlook link color fix */
+        #capture a { color: #333333 !important; text-decoration: none !important; }
     </style>
 </head>
 <body>
@@ -26,18 +29,18 @@
         <div class="input-box">
             <label>Profile Photo</label>
             <input type="file" id="in-file" accept="image/*" onchange="handleImage(this)">
-            <small>Upload a square photo for best results.</small>
+            <small>Upload a square photo.</small>
         </div>
         <div class="input-box"><label>Full Name</label><input type="text" id="in-name" value="John Smith" oninput="draw()"></div>
         <div class="input-box"><label>Job Title</label><input type="text" id="in-title" value="SEO Account Manager" oninput="draw()"></div>
-        <div class="input-box"><label>Direct Line</label><input type="text" id="in-mob" value="" placeholder="+44 (0)1234 567 890" oninput="draw()"></div>
+        <div class="input-box"><label>Mobile</label><input type="text" id="in-mob" value="" placeholder="+44..." oninput="draw()"></div>
         <div class="input-box"><label>Email</label><input type="text" id="in-email" value="john.smith@fsedigital.com" oninput="draw()"></div>
         <div class="input-box"><label>LinkedIn URL</label><input type="text" id="in-linkedin" value="" placeholder="https://linkedin.com/in/..." oninput="draw()"></div>
     </div>
 
     <div class="preview-panel">
         <div id="capture">
-            <table cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333; line-height: 1.4; min-width: 450px;">
+            <table cellpadding="0" cellspacing="0" style="font-family: Arial, sans-serif; color: #333333; line-height: 1.4; min-width: 450px;">
                 <tr><td colspan="2" style="border-top: 4px solid #ff6600; padding-bottom: 25px;"></td></tr>
                 
                 <tr>
@@ -47,23 +50,23 @@
                     
                     <td valign="top">
                         <div id="out-name" style="font-size: 22px; font-weight: bold; color: #1a1a1a;">John Smith</div>
-                        <div id="out-title" style="font-size: 16px; color: #777; margin-bottom: 15px;">SEO Account Manager</div>
+                        <div id="out-title" style="font-size: 16px; color: #777777; margin-bottom: 15px;">Founder & MD</div>
                         
-                        <table cellpadding="0" cellspacing="0" style="font-size: 14px;">
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">T:</strong> <span>+44 (0)1245 477 449</span></td></tr>
+                        <table cellpadding="0" cellspacing="0" style="font-size: 14px; color: #333333;">
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">T:</strong> <a href="tel:+441245477449" style="text-decoration:none; color:#333333;">+44 (0)1245 477 449</a></td></tr>
                             
-                            <tr id="row-mob" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">D:</strong> <span id="out-mob"></span></td></tr>
+                            <tr id="row-mob"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">M:</strong> <a id="out-mob-link" href="tel:+447809480339" style="text-decoration:none; color:#333333;"><span id="out-mob">+44 7809 480 339</span></a></td></tr>
                             
-                            <tr id="row-email"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <span id="out-email">john.smith@fsedigital.com</span></td></tr>
+                            <tr id="row-email"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <a id="out-email-link" href="mailto:john.smith@fsedigital.com" style="text-decoration:none; color:#333333;"><span id="out-email">john.smith@fsedigital.com</span></a></td></tr>
                             
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W:</strong> fsedigital.com</td></tr>
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W:</strong> <a href="https://fsedigital.com" style="text-decoration:none; color:#333333;">fsedigital.com</a></td></tr>
                             
-                            <tr id="row-linkedin" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">L:</strong> <span id="out-linkedin"></span></td></tr>
+                            <tr id="row-linkedin" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">L:</strong> <a id="out-linkedin-link" href="#" style="text-decoration:none; color:#333333;">LinkedIn Profile</a></td></tr>
                         </table>
 
                         <div style="margin-top: 15px">
-                            <img src="https://fsedigital.com/email-signatures/new/fseDigitalLogo.png" alt="fseDigital" style="width: 140px; margin-bottom: 5px; display: block;">
-                            <img src="https://fsedigital.com/email-signatures/new/FreelanceSEOLogo.png" alt="Freelance SEO" style="width: 160px; display: block;">
+                            <img src="https://fsedigital.com/email-signatures/new/fseDigitalLogo.png" alt="" style="width: 140px; margin-bottom: 5px; display: block;">
+                            <img src="https://fsedigital.com/email-signatures/new/FreelanceSEOLogo.png" alt="" style="width: 160px; display: block;">
                         </div>
                     </td>
                 </tr>
@@ -76,7 +79,6 @@
             </table>
         </div>
         <button class="copy-btn" onclick="copy()">Copy Signature</button>
-        <small style="text-align: center;">After clicking, paste (Ctrl+V) into your Outlook/Gmail signature settings.</small>
     </div>
 </div>
 
@@ -92,20 +94,24 @@
     }
 
     function draw() {
-        // Text Updates
         const name = document.getElementById('in-name').value;
         const title = document.getElementById('in-title').value;
         const mob = document.getElementById('in-mob').value;
         const email = document.getElementById('in-email').value;
         const linkedin = document.getElementById('in-linkedin').value;
 
+        // Content
         document.getElementById('out-name').innerText = name || "Your Name";
-        document.getElementById('out-title').innerText = title || "Job Title";
+        document.getElementById('out-title').innerText = title || "Your Title";
         document.getElementById('out-mob').innerText = mob;
         document.getElementById('out-email').innerText = email;
-        document.getElementById('out-linkedin').innerText = linkedin;
 
-        // Visibility Logic (Hide row if empty)
+        // Links
+        document.getElementById('out-mob-link').href = "tel:" + mob.replace(/\s+/g, '');
+        document.getElementById('out-email-link').href = "mailto:" + email;
+        document.getElementById('out-linkedin-link').href = linkedin;
+
+        // Row Visibility
         document.getElementById('row-mob').style.display = mob ? "table-row" : "none";
         document.getElementById('row-email').style.display = email ? "table-row" : "none";
         document.getElementById('row-linkedin').style.display = linkedin ? "table-row" : "none";
@@ -113,21 +119,19 @@
 
     async function copy() {
         const container = document.getElementById('capture');
-        // We clone the HTML to ensure we're getting the current state of visibility
         const html = container.innerHTML;
         const blob = new Blob([html], { type: "text/html" });
         const data = [new ClipboardItem({ "text/html": blob })];
         
         try {
             await navigator.clipboard.write(data);
-            alert("Signature copied! Now paste it into your email settings.");
+            alert("Signature copied! Paste it into your settings.");
         } catch (err) {
-            console.error(err);
-            alert("Failed to copy. Please try using Chrome or Edge.");
+            alert("Error copying. Please use Chrome or Edge.");
         }
     }
 
-    // Run once on load to set initial visibility
+    // Initialize
     draw();
 </script>
 </body>
