@@ -29,7 +29,7 @@
         <div class="input-box">
             <label>Profile Photo</label>
             <input type="file" id="in-file" accept="image/*" onchange="handleImage(this)">
-            <small>Upload a square photo.</small>
+            <small>Any photo will now be auto-cropped to a square.</small>
         </div>
         <div class="input-box"><label>Full Name</label><input type="text" id="in-name" value="John Smith" oninput="draw()"></div>
         <div class="input-box"><label>Job Title</label><input type="text" id="in-title" value="SEO Account Manager" oninput="draw()"></div>
@@ -45,7 +45,7 @@
                 
                 <tr>
                     <td valign="top" style="padding-right: 30px;">
-                        <img id="out-img" src="https://fsedigital.com/email-signatures/new/no-profile.png" width="150" height="150" style="border-radius: 50%; border: 3px solid #ff6600; display: block; object-fit: cover;">
+                        <img id="out-img" src="https://fsedigital.com/email-signatures/new/no-profile.png" width="150" height="150" style="border-radius: 50%; border: 3px solid #ff6600; display: block; width: 150px; height: 150px;">
                     </td>
                     
                     <td valign="top">
@@ -97,12 +97,36 @@
     </div>
 </div>
 
+<canvas id="cropCanvas" style="display:none;" width="300" height="300"></canvas>
+
 <script>
     function handleImage(input) {
         if (input.files && input.files[0]) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                document.getElementById('out-img').src = e.target.result;
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.getElementById('cropCanvas');
+                    const ctx = canvas.getContext('2d');
+                    
+                    // Logic to center-crop the image into a square
+                    let sourceX, sourceY, sourceSize;
+                    if (img.width > img.height) {
+                        sourceSize = img.height;
+                        sourceX = (img.width - img.height) / 2;
+                        sourceY = 0;
+                    } else {
+                        sourceSize = img.width;
+                        sourceX = 0;
+                        sourceY = (img.height - img.width) / 2;
+                    }
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    ctx.drawImage(img, sourceX, sourceY, sourceSize, sourceSize, 0, 0, 300, 300);
+                    
+                    document.getElementById('out-img').src = canvas.toDataURL("image/png");
+                };
+                img.src = e.target.result;
             };
             reader.readAsDataURL(input.files[0]);
         }
@@ -124,35 +148,28 @@
         document.getElementById('out-email-link').href = "mailto:" + email;
         document.getElementById('out-linkedin-link').href = linkedin;
 
-        // Visual toggle for the browser preview
         document.getElementById('row-mob').style.display = mob ? "table-row" : "none";
         document.getElementById('row-email').style.display = email ? "table-row" : "none";
         document.getElementById('row-linkedin').style.display = linkedin ? "table-row" : "none";
     }
 
     async function copy() {
-        // 1. Clone the capture area
         const original = document.getElementById('capture');
         const clone = original.cloneNode(true);
-
-        // 2. Physically remove rows that are hidden
         const rows = clone.querySelectorAll('tr[id]');
         rows.forEach(row => {
-            if (row.style.display === 'none') {
-                row.remove();
-            }
+            if (row.style.display === 'none') row.remove();
         });
 
-        // 3. Copy the cleaned HTML
         const html = clone.innerHTML;
         const blob = new Blob([html], { type: "text/html" });
         const data = [new ClipboardItem({ "text/html": blob })];
         
         try {
             await navigator.clipboard.write(data);
-            alert("Signature copied! (Empty fields were removed)");
+            alert("Signature copied!");
         } catch (err) {
-            alert("Error copying. Please use Chrome or Edge.");
+            alert("Error copying.");
         }
     }
 
