@@ -33,7 +33,7 @@
         </div>
         <div class="input-box"><label>Full Name</label><input type="text" id="in-name" value="John Smith" oninput="draw()"></div>
         <div class="input-box"><label>Job Title</label><input type="text" id="in-title" value="SEO Account Manager" oninput="draw()"></div>
-        <div class="input-box"><label>Mobile</label><input type="text" id="in-mob" value="" placeholder="+44..." oninput="draw()"></div>
+        <div class="input-box"><label>Direct Tel</label><input type="text" id="in-mob" value="" placeholder="+44..." oninput="draw()"></div>
         <div class="input-box"><label>Email</label><input type="text" id="in-email" value="john.smith@fsedigital.com" oninput="draw()"></div>
         <div class="input-box"><label>LinkedIn URL</label><input type="text" id="in-linkedin" value="" placeholder="https://linkedin.com/in/..." oninput="draw()"></div>
     </div>
@@ -53,15 +53,19 @@
                         <div id="out-title" style="font-size: 16px; color: #777777; margin-bottom: 15px;">Founder & MD</div>
                         
                         <table cellpadding="0" cellspacing="0" style="font-size: 14px; color: #333333;">
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">T:</strong> <a href="tel:+441245477449" style="text-decoration:none; color:#333333;">+44 (0)1245 477 449</a></td></tr>
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">T</strong> <a href="tel:+441245477449" style="text-decoration:none; color:#333333;">+44 (0)1245 477 449</a></td></tr>
                             
-                            <tr id="row-mob"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">M:</strong> <a id="out-mob-link" href="tel:+447809480339" style="text-decoration:none; color:#333333;"><span id="out-mob">+44 7809 480 339</span></a></td></tr>
+                            <tr id="row-mob"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">D</strong> <a id="out-mob-link" href="tel:+447809480339" style="text-decoration:none; color:#333333;"><span id="out-mob">+44 7809 480 339</span></a></td></tr>
                             
-                            <tr id="row-email"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E:</strong> <a id="out-email-link" href="mailto:john.smith@fsedigital.com" style="text-decoration:none; color:#333333;"><span id="out-email">john.smith@fsedigital.com</span></a></td></tr>
+                            <tr id="row-email"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">E</strong> <a id="out-email-link" href="mailto:john.smith@fsedigital.com" style="text-decoration:none; color:#333333;"><span id="out-email">john.smith@fsedigital.com</span></a></td></tr>
                             
-                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W:</strong> <a href="https://fsedigital.com" style="text-decoration:none; color:#333333;">fsedigital.com</a></td></tr>
+                            <tr><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">W</strong> <a href="https://fsedigital.com" style="text-decoration:none; color:#333333;">www.fsedigital.com</a></td></tr>
                             
-                            <tr id="row-linkedin" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600;">L:</strong> <a id="out-linkedin-link" href="#" style="text-decoration:none; color:#333333;">LinkedIn Profile</a></td></tr>
+                            <tr id="row-linkedin" style="display:none;"><td style="padding-bottom: 5px;"><strong style="color:#ff6600; vertical-align: middle;">
+                                <svg width="16" height="16" fill="#ff6600" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M6.94 5.001a2 2 0 1 1-4-.002 2 2 0 0 1 4 .002ZM7 8.481H3v12.52h4V8.481Zm6.32 0H9.34v12.52h3.94v-6.57c0-3.66 4.77-4 4.77 0v6.57H22v-7.93c0-6.17-7.06-5.94-8.72-2.91l.04-1.68Z"></path>
+                                </svg>
+                                </strong> <a id="out-linkedin-link" href="#" style="text-decoration:none; color:#333333;">Connect on LinkedIn</a></td></tr>
                         </table>
 
                         <div style="margin-top: 15px">
